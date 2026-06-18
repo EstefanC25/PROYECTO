@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mantenimiento Preventivo - Ascensores</title>
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<header class="header-formato">
+
+  <div class="header-titulo-bloque">
+    <h1 class="titulo-formato">MANTENIMIENTO PREVENTIVO</h1>
+    <div class="subtitulo-formato">ASCENSORES</div>
+  </div>
+
+</header>
+
+  <form id="formMtto">
+
+  <div id="mensajeEstado"></div>
+
+  <!-- TABLA DATOS GENERALES + HORAS, ESTILO FORMATO IMPRESO -->
+  <div class="tabla-formato-wrap">
+    <table class="tabla-formato">
+      <tr>
+        <td class="celda-label">SEMANA TERMINADA EN</td>
+        <td class="celda-input" colspan="2"><input type="date" id="semanaTerminadaEn"></td>
+        <td class="celda-label">FECHA</td>
+        <td class="celda-input" colspan="2"><input type="date" id="fecha" required></td>
+        <td class="celda-label">RUTA No.</td>
+        <td class="celda-input"><input type="text" id="rutaNo"></td>
+      </tr>
+      <tr>
+        <td class="celda-label">EDIFICIO</td>
+        <td class="celda-input" colspan="2"><input type="text" id="edificio" required></td>
+        <td class="celda-label">TORRE</td>
+        <td class="celda-input" colspan="2"><input type="text" id="torre"></td>
+        <td class="celda-label">CIUDAD</td>
+        <td class="celda-input"><input type="text" id="ciudad"></td>
+      </tr>
+      <tr class="fila-encabezados-amarillos">
+        <th colspan="3">NOMBRE TECNICOS</th>
+        <th>No<br>EQUIPO</th>
+        <th>HORAS<br>ORDINARIAS</th>
+        <th>HORAS<br>EXTRAS<br>DIURNAS</th>
+        <th>HORAS<br>EXTRAS<br>NOCTURNAS</th>
+        <th>HORAS<br>EXTRAS<br>FEST.<br>DIURNAS</th>
+      </tr>
+      <tr>
+        <td colspan="3"><input type="text" id="nombreTecnicos" required></td>
+        <td><input type="text" id="elevNo"></td>
+        <td><input type="number" step="0.5" id="horasOrdinarias"></td>
+        <td><input type="number" step="0.5" id="horasExtrasDiurnas"></td>
+        <td><input type="number" step="0.5" id="horasExtrasNocturnas"></td>
+        <td><input type="number" step="0.5" id="horasExtrasFestDiurnas"></td>
+      </tr>
+      <tr class="fila-encabezados-amarillos">
+        <th colspan="4">HORAS<br>EXTRAS<br>FEST.<br>NOCTURNAS</th>
+        <th colspan="2">HORAS<br>TRANSP.</th>
+        <th colspan="2">TOTAL<br>HORAS</th>
+      </tr>
+      <tr>
+        <td colspan="4"><input type="number" step="0.5" id="horasExtrasFestNocturnas"></td>
+        <td colspan="2"><input type="number" step="0.5" id="horasTransp"></td>
+        <td colspan="2"><input type="number" step="0.5" id="totalHoras"></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="seccion">
+    <h2>Checklist de condiciones</h2>
+    <div class="leyenda">
+      ✓ Bien &nbsp;|&nbsp; X Necesita reparación/reemplazo &nbsp;|&nbsp; ⊙ Realizado durante mantenimiento &nbsp;|&nbsp; ⊘ No aplica
+    </div>
+    <div id="checklistContainer"></div>
+  </div>
+
+  <!-- DATOS FINALES -->
+  <div class="seccion">
+    <h2>Datos de cierre</h2>
+    <div class="grid3">
+      <div>
+        <label>MEC</label>
+        <input type="text" id="mec">
+      </div>
+      <div>
+        <label>NIE</label>
+        <input type="text" id="nie">
+      </div>
+      <div>
+        <label>Orden</label>
+        <input type="text" id="orden">
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div>
+        <label>Hora inicio</label>
+        <input type="time" id="horaMilitarInicio">
+      </div>
+      <div>
+        <label>Hora fin</label>
+        <input type="time" id="horaMilitarFin">
+      </div>
+    </div>
+
+    <div class="check-reprogramacion">
+      <input type="checkbox" id="reprogramacionCliente">
+      <label style="margin:0;">Se reprograma a petición del cliente</label>
+    </div>
+    <div class="check-reprogramacion">
+      <input type="checkbox" id="reprogramacionMelcol">
+      <label style="margin:0;">Se reprograma por MELCOL</label>
+    </div>
+
+    <label>Razón de la reprogramación</label>
+    <input type="text" id="razonReprogramacion">
+
+    <label>Observaciones</label>
+    <textarea id="observaciones" rows="3"></textarea>
+
+    <label>Nombre del cliente (recibe a satisfacción)</label>
+    <input type="text" id="nombreCliente">
+
+    <label>Nombre técnico encargado</label>
+    <input type="text" id="nombreTecnicoEncargado">
+  </div>
+
+  <button type="submit" class="enviar" id="btnEnviar">Guardar registro</button>
+</form>
+
+<script>
+  // URL del Web App de Apps Script (reemplazar con la URL real de implementación)
+  const SCRIPT_URL = "PEGA_AQUI_TU_URL_DE_APPS_SCRIPT";
+
+  // ---- Bloque del checklist: estados posibles + items a evaluar ----
+  const estados = [
+    { valor: "bien", icono: "✓", texto: "Bien" },
+    { valor: "reparar", icono: "X", texto: "Reparar" },
+    { valor: "realizado", icono: "⊙", texto: "Realizado" },
+    { valor: "noaplica", icono: "⊘", texto: "No aplica" },
+  ];
+
+  // Definición de items del checklist: [id, etiqueta, esSubitem]
+  const items = [
+    ["item1", "1. Condiciones generales cuarto de máquinas", false],
+    ["item2", "2. Condiciones cada aparato en cuarto de máquinas", false],
+    ["item2_1", "2.1 Máquina de tracción/motor y polea deflectora", true],
+    ["item2_2", "2.2 Panel de control", true],
+    ["item2_3", "2.3 Freno electromagnético", true],
+    ["item2_4", "2.4 Gobernador", true],
+    ["item3", "3. Condiciones de operación de carro", false],
+    ["item4", "4. Condición de operación de puertas", false],
+    ["item5", "5. Condición cada aparato relacionado con el carro", false],
+    ["item5_1", "5.1 Botoneras", true],
+    ["item5_2", "5.2 Indicador de posición", true],
+    ["item5_3", "5.3 Luz de cabina", true],
+    ["item5_4", "5.4 Luz de emergencia", true],
+    ["item6", "6. Aparatos de intercomunicación", false],
+    ["item7", "7. Apariencia de los componentes de cabina", false],
+    ["item8", "8. Apariencia de los componentes de hall", false],
+    ["item9", "9. Condiciones cada aparato relacionado con el hall", false],
+    ["item9_1", "9.1 Botones", true],
+    ["item9_2", "9.2 Indicador de posición", true],
+    ["item10", "10. Condiciones generales del pit", false],
+    ["item11", "11. Límites superior e inferior", false],
+    ["item12", "12. Seguro de carro", false],
+    ["item13", "13. Cables y rieles", false],
+    ["item14", "14. Correas", false],
+    ["item15", "15. Válvula, bombas", false],
+    ["item16", "16. Niveles de aceites y fugas en tuberías", false],
+    ["item17", "17. Émbolo hidráulico", false],
+    ["item18", "18. Opcionales", false],
+  ];
+  // ---- Fin del bloque del checklist ----
+
+  const respuestas = {};
+
+  const container = document.getElementById("checklistContainer");
+
+  items.forEach(([id, etiqueta, esSubitem]) => {
+    const row = document.createElement("div");
+    row.className = "item-row" + (esSubitem ? " subitem" : "");
+
+    const label = document.createElement("div");
+    label.className = "item-label";
+    label.textContent = etiqueta;
+    row.appendChild(label);
+
+    const botonesDiv = document.createElement("div");
+    botonesDiv.className = "estado-botones";
+
+    estados.forEach(est => {
+      const btn = document.createElement("div");
+      btn.className = "estado-btn";
+      btn.dataset.estado = est.valor;
+      btn.innerHTML = est.icono + '<span class="txt">' + est.texto + '</span>';
+      btn.addEventListener("click", () => {
+        // Quitar activo de los hermanos
+        botonesDiv.querySelectorAll(".estado-btn").forEach(b => b.classList.remove("activo"));
+        btn.classList.add("activo");
+        respuestas[id] = est.valor;
+      });
+      botonesDiv.appendChild(btn);
+    });
+
+    row.appendChild(botonesDiv);
+    container.appendChild(row);
+  });
+
+  function mostrarMensaje(tipo, texto) {
+    const el = document.getElementById("mensajeEstado");
+    el.className = tipo;
+    el.textContent = texto;
+  }
+
+  document.getElementById("formMtto").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const btn = document.getElementById("btnEnviar");
+    btn.disabled = true;
+    btn.textContent = "Guardando...";
+
+    const data = {
+      fecha: document.getElementById("fecha").value,
+      semanaTerminadaEn: document.getElementById("semanaTerminadaEn").value,
+      rutaNo: document.getElementById("rutaNo").value,
+      ciudad: document.getElementById("ciudad").value,
+      edificio: document.getElementById("edificio").value,
+      torre: document.getElementById("torre").value,
+      elevNo: document.getElementById("elevNo").value,
+      nombreTecnicos: document.getElementById("nombreTecnicos").value,
+      noEquipo: document.getElementById("elevNo").value,
+
+      horasOrdinarias: document.getElementById("horasOrdinarias").value,
+      horasExtrasDiurnas: document.getElementById("horasExtrasDiurnas").value,
+      horasExtrasNocturnas: document.getElementById("horasExtrasNocturnas").value,
+      horasExtrasFestDiurnas: document.getElementById("horasExtrasFestDiurnas").value,
+      horasExtrasFestNocturnas: document.getElementById("horasExtrasFestNocturnas").value,
+      horasTransp: document.getElementById("horasTransp").value,
+      totalHoras: document.getElementById("totalHoras").value,
+
+      mec: document.getElementById("mec").value,
+      nie: document.getElementById("nie").value,
+      orden: document.getElementById("orden").value,
+      horaMilitarInicio: document.getElementById("horaMilitarInicio").value,
+      horaMilitarFin: document.getElementById("horaMilitarFin").value,
+      reprogramacionCliente: document.getElementById("reprogramacionCliente").checked ? "X" : "",
+      reprogramacionMelcol: document.getElementById("reprogramacionMelcol").checked ? "X" : "",
+      razonReprogramacion: document.getElementById("razonReprogramacion").value,
+      observaciones: document.getElementById("observaciones").value,
+      nombreCliente: document.getElementById("nombreCliente").value,
+      nombreTecnicoEncargado: document.getElementById("nombreTecnicoEncargado").value,
+    };
+
+    // Agregar respuestas del checklist
+    items.forEach(([id]) => {
+      data[id] = respuestas[id] || "";
+    });
+
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then(() => {
+        mostrarMensaje("ok", "✓ Registro guardado correctamente");
+        document.getElementById("formMtto").reset();
+        document.querySelectorAll(".estado-btn.activo").forEach(b => b.classList.remove("activo"));
+        for (const key in respuestas) delete respuestas[key];
+        window.scrollTo(0, 0);
+      })
+      .catch((err) => {
+        mostrarMensaje("error", "Error al guardar. Verifica tu conexión e intenta de nuevo.");
+        console.error(err);
+      })
+      .finally(() => {
+        btn.disabled = false;
+        btn.textContent = "Guardar registro";
+      });
+  });
+</script>
+
+</body>
+</html>

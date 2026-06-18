@@ -1,0 +1,364 @@
+  :root {
+    --rojo: #E60012;
+    --negro: #1a1a1a;
+    --amarillo: #FFFF00;
+    --verde: #2e9e4f;
+    --azul: #2563eb;
+    --rojo-x: #d32f2f;
+    --gris-fondo: #e9e9e9;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--gris-fondo);
+    color: var(--negro);
+    padding-bottom: 60px;
+  }
+
+  /* ---- HEADER ESTILO FORMATO IMPRESO ---- */
+  header.header-formato {
+    background: #fff;
+    border-bottom: 2px solid #000;
+  }
+
+
+
+  .header-logo-bloque {
+    flex: 0 0 auto;
+  }
+
+  .logo-mitsubishi {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .logo-icono {
+    color: var(--rojo);
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+
+  .logo-nombre {
+    color: var(--rojo);
+    font-weight: 80;
+    font-size: 10px;
+    line-height: 1.05;
+    letter-spacing: 0.2px;
+  }
+
+  .logo-slogan {
+    font-size: 6px;
+    color: #555;
+    font-style: italic;
+  }
+
+
+
+  .titulo-formato {
+    font-size: 13px;
+    margin: 0;
+  
+    letter-spacing: 0.2px;
+    color: #000;
+  }
+
+  .subtitulo-formato {
+    font-size: 10px;
+    font-weight: 700;
+    color: #000;
+    margin-top: 0;
+  }
+
+  .header-numero-bloque {
+   
+    font-size: 10px;
+    font-weight: 700;
+    color: #000;
+    white-space: nowrap;
+  }
+
+  form {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 8px;
+  }
+
+  /* ---- Bloque tipo "seccion" ahora plano, como tabla impresa ---- */
+  .seccion {
+    background: #fff;
+    border: 1.5px solid #000;
+    padding: 6px 8px 8px;
+    margin-bottom: 8px;
+  }
+
+  .seccion h2 {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #000;
+    background: var(--amarillo);
+    margin: -6px -8px 6px -8px;
+    padding: 4px 8px;
+    border-bottom: 1.5px solid #000;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+
+  label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    margin-top: 6px;
+    margin-bottom: 2px;
+    color: #000;
+    text-transform: uppercase;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 5px 6px;
+    border: 1px solid #000;
+    border-radius: 0;
+    font-size: 13px;
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--azul);
+    background: #f5f9ff;
+  }
+
+  .grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .grid3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+  }
+
+  /* ---- Tabla estilo formato impreso (datos generales + horas) ---- */
+  .tabla-formato-wrap {
+    background: #fff;
+    border: 1.5px solid #000;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+
+  table.tabla-formato {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    font-size: 7px;
+  }
+
+  table.tabla-formato td,
+  table.tabla-formato th {
+    border: 1px solid #000;
+    padding: 1px 2px;
+    text-align: left;
+    vertical-align: middle;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  table.tabla-formato td.celda-label {
+    font-weight: 700;
+    font-size: 6.5px;
+    background: #fff;
+    white-space: normal;
+    color: #000;
+  }
+
+  table.tabla-formato tr.fila-encabezados-amarillos th {
+    background: var(--amarillo);
+    font-size: 6px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    color: #000;
+    line-height: 1.15;
+  }
+
+  table.tabla-formato input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 2px 1px;
+    font-size: 8px;
+    text-align: center;
+    min-width: 0;
+  }
+
+  table.tabla-formato input:focus {
+    outline: 2px solid var(--azul);
+    background: #f5f9ff;
+  }
+
+  table.tabla-formato td.celda-input input {
+    text-align: left;
+  }
+
+  /* ---- Checklist de items, estilo tabla clásica ---- */
+  .leyenda {
+    font-size: 9px;
+    color: #000;
+    background: #f5f5f5;
+    border: 1px solid #000;
+    padding: 4px 6px;
+    margin-bottom: 6px;
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  .item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    border-bottom: 1px solid #000;
+    padding: 3px 2px;
+  }
+
+  .item-row:last-child { border-bottom: none; }
+
+  .item-label {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: #000;
+    flex: 1 1 auto;
+    line-height: 1.2;
+    text-transform: none;
+  }
+
+  .estado-botones {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 2px;
+  }
+
+  .estado-btn {
+    border: 1px solid #000;
+    background: #fff;
+    border-radius: 0;
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.1s ease;
+    flex: 0 0 auto;
+  }
+
+  .estado-btn span.txt {
+    display: none;
+  }
+
+  .estado-btn.activo[data-estado="bien"] {
+    background: var(--verde);
+    border-color: #000;
+    color: #fff;
+  }
+
+  .estado-btn.activo[data-estado="reparar"] {
+    background: var(--rojo-x);
+    border-color: #000;
+    color: #fff;
+  }
+
+  .estado-btn.activo[data-estado="realizado"] {
+    background: var(--azul);
+    border-color: #000;
+    color: #fff;
+  }
+
+  .estado-btn.activo[data-estado="noaplica"] {
+    background: #888;
+    border-color: #000;
+    color: #fff;
+  }
+
+  .subitem {
+    margin-left: 8px;
+    border-left: 2px solid #000;
+    padding-left: 6px;
+  }
+
+  .firma-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .check-reprogramacion {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    font-size: 11px;
+  }
+
+  .check-reprogramacion input {
+    width: auto;
+  }
+
+  .check-reprogramacion label {
+    text-transform: none;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  button.enviar {
+    width: 100%;
+    background: var(--rojo);
+    color: #fff;
+    border: 2px solid #000;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 0;
+    cursor: pointer;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  button.enviar:active { opacity: 0.85; }
+
+  button.enviar:disabled {
+    background: #bbb;
+    border-color: #888;
+  }
+
+  #mensajeEstado {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px;
+    border: 1.5px solid #000;
+    margin-bottom: 8px;
+    display: none;
+  }
+
+  #mensajeEstado.ok {
+    display: block;
+    background: #d9f2e0;
+    color: #1a6b34;
+  }
+
+  #mensajeEstado.error {
+    display: block;
+    background: #fbdcdc;
+    color: #a31515;
+  }
